@@ -2,7 +2,6 @@ VERSION ?= "latest"
 BASEIMAGE := "baseimage"
 PHP := "php-5.6"
 NODEJS := "nodejs-6"
-TRAVIS_TAG ?= ""
 
 build:
 	IMAGE=$(BASEIMAGE) VERSION=$(VERSION) ./scripts/build.baseimage.sh
