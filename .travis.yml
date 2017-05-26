@@ -10,12 +10,9 @@ before_install:
   - echo 'DOCKER_OPTS="--experimental=true"' | sudo tee /etc/default/docker
   - sudo service docker restart
 
-jobs:
-  include:
-    - stage: build
-      script: sudo make build
-    - stage: test
-      script: sudo make test
+script:
+  - sudo make build
+  - sudo make test
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then sudo make publish; fi
