@@ -2,7 +2,9 @@
 
 # Docker base images
 
-* Baseimage (ideas and my_init/setuser scripts borrowed from [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker))
+* Ubuntu 16.04 LTS (ideas and my_init/setuser scripts taken from [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker))
+* Tiny size
+* Low memory footprint (about 6MB)
 * NodeJS
 * PHP 5.6
 
