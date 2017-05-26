@@ -15,4 +15,6 @@ script:
   - sudo make test
 
 after_success:
-  - echo "ok"
+  - if [[ "$TRAVIS_BRANCH" == "master" || ! -z "$TRAVIS_TAG" ]]; then
+    sudo make publish
+    fi
