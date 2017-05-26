@@ -41,3 +41,13 @@ chmod +x /etc/service/cron-schedule/run /etc/service/cron-update/run
 
 touch /etc/crontab
 chmod 600 /etc/crontab
+
+# mta
+# @see https://github.com/bruceg/nullmailer
+mkdir -p /etc/nullmailer /var/spool/nullmailer/queue
+mkfifo /var/spool/nullmailer/trigger
+chown nobody:nogroup /var/spool/nullmailer/queue /var/spool/nullmailer/trigger /etc/nullmailer
+
+mkdir -p /etc/service/nullmailer
+cp /build/system/nullmailer.runit /etc/service/nullmailer/run
+chmod +x /etc/service/nullmailer/run

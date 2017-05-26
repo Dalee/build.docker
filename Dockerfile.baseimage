@@ -43,6 +43,7 @@ RUN apt-get -qq install -y --no-install-recommends \
     htop \
     psmisc \
     bcron \
+    nullmailer \
     net-tools \
     locales \
     apt-transport-https \
