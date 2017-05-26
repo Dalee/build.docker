@@ -9,12 +9,15 @@ before_install:
   - echo 'DOCKER_OPTS="--experimental=true"' | sudo tee /etc/default/docker
   - sudo service docker restart
 
-script:
-  - docker --version
-  - sudo make build
-  - sudo make test
+jobs:
+  include:
+    - stage: build
+      script: sudo make build
+    - stage: test
+      script: sudo make test
+    - stage: deploy
 
 after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" || ! -z "$TRAVIS_TAG" ]]; then
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
     sudo make publish
     fi
