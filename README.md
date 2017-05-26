@@ -13,7 +13,7 @@
 
 ## NodeJS
 
-> Image is squashed, so actually contains only two layers.
+> Image is squashed, so actually it contains only two layers.
 
 [![](https://images.microbadger.com/badges/image/dalee/nodejs-6.svg)](https://microbadger.com/images/dalee/nodejs-6 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/nodejs-6.svg)](https://microbadger.com/images/dalee/nodejs-6 "Get your own version badge on microbadger.com")
@@ -23,7 +23,7 @@
 
 ## PHP 5.6
 
-> Image is squashed, so actually contains only two layers.
+> Image is squashed, so actually it contains only two layers.
 
 [![](https://images.microbadger.com/badges/image/dalee/php-5.6.svg)](https://microbadger.com/images/dalee/php-5.6 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/php-5.6.svg)](https://microbadger.com/images/dalee/php-5.6 "Get your own version badge on microbadger.com")
