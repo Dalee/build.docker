@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Dalee/build.docker.svg?branch=master)](https://travis-ci.org/Dalee/build.docker)
 
-# Docker
+# Docker base images
 
 * Baseimage (ideas and my_init/setuser scripts borrowed from [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker))
 * NodeJS
@@ -8,11 +8,12 @@
 
 ## Baseimage
 
-* [bcron](https://github.com/bruceg/bcron)
-* [ansible](https://www.ansible.com/)
-
 [![](https://images.microbadger.com/badges/image/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
+
+* [bcron](https://github.com/bruceg/bcron)
+* [ansible](https://www.ansible.com/)
+* a small set of useful utilities (curl, vim-tiny, htop, etc..)
 
 ## Node.JS 6
 
