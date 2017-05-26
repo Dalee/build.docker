@@ -1,6 +1,9 @@
 language: bash
 sudo: required
 
+on:
+  tags: true
+
 services:
   - docker
 
