@@ -1,18 +1,13 @@
 [![Build Status](https://travis-ci.org/Dalee/build.docker.svg?branch=master)](https://travis-ci.org/Dalee/build.docker)
 
-# Docker base images
-
-* Ubuntu 16.04 LTS (ideas and my_init/setuser scripts taken from [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker))
-* Tiny size
-* Low memory footprint (about 6MB)
-* NodeJS
-* PHP 5.6
-
-## Baseimage
+# Baseimage
 
 [![](https://images.microbadger.com/badges/image/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
 
+* Ubuntu 16.04 LTS (ideas and my_init/setuser scripts taken from [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker))
+* Tiny size and low memory footprint (about 6MB)
+* [nullmailer](https://github.com/bruceg/nullmailer)
 * [bcron](https://github.com/bruceg/bcron)
 * [ansible](https://www.ansible.com/)
 * a small set of useful utilities (curl, vim-tiny, htop, etc..)
