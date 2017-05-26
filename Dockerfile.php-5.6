@@ -1,0 +1,60 @@
+FROM dalee/baseimage:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add sources
+RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
+    echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt/sources.list.d/php56.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
+    apt-get -qq -y update
+
+# Install nginx and php
+RUN apt-get install -y nginx \
+    php5.6-common \
+    php5.6-cli \
+    php5.6-fpm \
+    php5.6-pgsql \
+    php5.6-mysql \
+    php5.6-gd \
+    php5.6-bz2 \
+    php5.6-zip \
+    php5.6-json \
+    php5.6-xml \
+    php5.6-curl \
+    php5.6-intl \
+    php5.6-mbstring \
+    php5.6-mcrypt \
+    php5.6-bcmath \
+    php5.6-soap \
+    php5.6-opcache \
+    php5.6-xdebug
+
+# Install composer
+RUN curl "https://getcomposer.org/installer" -o /tmp/composer-installer.php && \
+    chmod 755 /tmp/composer-installer.php && \
+    php /tmp/composer-installer.php --install-dir=/tmp && \
+    mv /tmp/composer.phar /usr/local/bin/composer && \
+    chmod 755 /usr/local/bin/composer && \
+    rm /tmp/composer-installer.php
+
+# Disable composer warning and xdebug extension
+RUN echo "\nexport COMPOSER_ALLOW_SUPERUSER=1\n" >> /root/.bashrc && \
+    echo ";zend_extension=xdebug.so\n" > /etc/php/5.6/cli/conf.d/20-xdebug.ini && \
+    echo ";zend_extension=xdebug.so\n" > /etc/php/5.6/fpm/conf.d/20-xdebug.ini
+
+# Cleanup
+RUN apt-get autoremove --purge && \
+    rm -rf \
+    /var/lib/apt/lists/* \
+    /usr/share/doc/* \
+    /usr/share/man/* \
+    /usr/share/info/* \
+    /usr/share/lintian/* \
+    /usr/share/locale/* \
+    /usr/lib/systemd/* \
+    /usr/lib/valgrind/* \
+    /var/log/alternatives.log \
+    /var/log/bootstrap.log \
+    /var/log/dpkg.log \
+    /var/log/apt/*

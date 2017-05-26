@@ -9,10 +9,10 @@ RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/ap
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 46C2130DFD2497F5 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1655A0AB68576280 && \
-    apt-get -y update
+    apt-get -qq -y update
 
 # Install nginx, nodejs and yarn
-RUN apt-get install -y nginx nodejs yarn
+RUN apt-get -qq install -y nginx nodejs yarn
 
 # Cleanup
 RUN apt-get autoremove --purge && \
