@@ -1,0 +1,31 @@
+FROM dalee/baseimage:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add sources
+RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
+    echo "deb http://deb.nodesource.com/node_6.x xenial main" > /etc/apt/sources.list.d/nodejs.list && \
+    echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 46C2130DFD2497F5 && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1655A0AB68576280 && \
+    apt-get -y update
+
+# Install nginx, nodejs and yarn
+RUN apt-get install -y nginx nodejs yarn
+
+# Cleanup
+RUN apt-get autoremove --purge && \
+    rm -rf \
+    /var/lib/apt/lists/* \
+    /usr/share/doc/* \
+    /usr/share/man/* \
+    /usr/share/info/* \
+    /usr/share/lintian/* \
+    /usr/share/locale/* \
+    /usr/lib/systemd/* \
+    /usr/lib/valgrind/* \
+    /var/log/alternatives.log \
+    /var/log/bootstrap.log \
+    /var/log/dpkg.log \
+    /var/log/apt/*

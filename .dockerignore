@@ -1,0 +1,8 @@
+Dockerfile.baseimage
+Dockerfile.nodejs-6
+README.md
+Makefile
+scripts/build.baseimage.sh
+scripts/build.image.sh
+scripts/test-runner.sh
+scripts/publish.image.sh

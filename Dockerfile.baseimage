@@ -1,0 +1,80 @@
+FROM ubuntu:16.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Disable documentation
+RUN echo "# no documentation inside container\n\
+path-exclude /usr/share/doc/*\n\
+path-exclude /usr/share/man/*\n\
+path-exclude /usr/share/info/*\n\
+path-exclude /usr/share/lintian/*\n\
+path-exclude /usr/share/locale/*\n\
+path-exclude /usr/lib/systemd/*\n\
+path-exclude /usr/lib/valgrind/*\n\
+" > /etc/dpkg/dpkg.cfg.d/docker-no-documentation
+
+RUN echo "# disable recommends and suggests\n\
+APT::Install-Recommends "0";\n\
+APT::Install-Suggests "0";\n\
+" > /etc/apt/apt.conf.d/docker-no-suggests
+
+RUN echo "# disable suggestions\n\
+APT::Install-Recommends "false";\n\
+APT::AutoRemove::RecommendsImportant "false";\n\
+APT::AutoRemove::SuggestsImportant "false";\n\
+" > /etc/apt/apt.conf.d/docker-autoremove-suggests
+
+# Cleanup, upgrade and install apt-utils
+RUN apt-get remove -y insserv && \
+    dpkg --purge `dpkg --get-selections | grep deinstall | cut -f1` && \
+    apt-get dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold" && \
+    apt-get -y update && \
+    apt-get install -y apt-utils
+
+# Base setup
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main" > etc/apt/sources.list.d/ansible.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+	apt-get -y update
+
+# Install mandatory software
+RUN apt-get install -y --no-install-recommends \
+    tzdata \
+    runit \
+    htop \
+    psmisc \
+    bcron \
+    net-tools \
+    locales \
+    apt-transport-https \
+    ca-certificates \
+    ansible \
+    vim-tiny \
+    make \
+    curl \
+    less
+
+# Setup locale and update CA
+RUN locale-gen en_US.UTF-8 ru_RU.UTF-8 && \
+    ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    update-ca-certificates --fresh
+
+# Cleanup
+RUN apt-get autoremove --purge && \
+    rm -rf \
+    /var/lib/apt/lists/* \
+    /usr/share/doc/* \
+    /usr/share/man/* \
+    /usr/share/info/* \
+    /usr/share/lintian/* \
+    /usr/share/locale/* \
+    /usr/lib/systemd/* \
+    /usr/lib/valgrind/* \
+    /var/log/alternatives.log \
+    /var/log/bootstrap.log \
+    /var/log/dpkg.log \
+    /var/log/apt/*
+
+# Perform configuration
+COPY . /build/
+RUN /build/system/configure.sh && \
+    rm -rf /build

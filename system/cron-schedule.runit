@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eo pipefail
+
+exec env BCRON_USER=root /usr/sbin/bcron-start

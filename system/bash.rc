@@ -1,0 +1,27 @@
+[ -z "$PS1" ] && return
+
+#
+# script will fix kubernetes 1.2 terminal size
+# @see https://unix.stackexchange.com/a/283206
+#
+export TERM=xterm
+
+old=$(stty -g)
+stty raw -echo min 0 time 5
+
+printf '\0337\033[r\033[999;999H\033[6n\0338' > /dev/tty
+IFS='[;R' read -r _ rows cols _ < /dev/tty
+
+stty "$old"
+
+# echo "cols:$cols"
+# echo "rows:$rows"
+stty cols "$cols" rows "$rows"
+
+#
+# setting up the rest
+#
+export PS1='[\033[32m\]\w\]\033[00m\]] > '
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export EDITOR=vim
