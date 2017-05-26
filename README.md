@@ -11,7 +11,7 @@
 [![](https://images.microbadger.com/badges/image/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
 
-## NodeJS
+## Node.JS 6
 
 > Image is squashed, so actually it contains only two layers.
 
