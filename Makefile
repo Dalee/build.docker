@@ -12,7 +12,8 @@ test:
 	IMAGE=$(NODEJS) VERSION=$(VERSION) ./scripts/test-runner.sh
 
 publish:
-	TRAVIS_TAG=$(TRAVIS_TAG) IMAGE=$(BASEIMAGE) VERSION=$(VERSION) ./scripts/publish.image.sh
-	TRAVIS_TAG=$(TRAVIS_TAG) IMAGE=$(NODEJS) VERSION=$(VERSION) ./scripts/publish.image.sh
+	IMAGE=$(BASEIMAGE) VERSION="fat" ./scripts/publish.image.sh
+	IMAGE=$(BASEIMAGE) VERSION=$(VERSION) ./scripts/publish.image.sh
+	IMAGE=$(NODEJS) VERSION=$(VERSION) ./scripts/publish.image.sh
 
 .PHONY: build test publish

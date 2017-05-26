@@ -18,5 +18,6 @@ jobs:
       script: sudo make test
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then sudo make publish; fi
-  - if [ -n "${TRAVIS_TAG}" ]; then sudo make publish; fi
+  - if [ ("$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false") -o -n "${TRAVIS_TAG}" ];
+    then sudo make publish;
+    fi
