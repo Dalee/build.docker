@@ -12,6 +12,8 @@
 * [ansible](https://www.ansible.com/)
 * a small set of useful utilities (curl, vim-tiny, htop, etc..)
 
+`docker pull dalee/baseimage`
+
 ## Node.JS 6
 
 > Image is squashed, so actually it contains only two layers.
@@ -22,6 +24,8 @@
 * Nginx mainline (disabled by default)
 * Node.JS 6 LTS
 * Yarn
+
+`docker pull dalee/nodejs-6`
 
 ## PHP 5.6
 
@@ -34,3 +38,5 @@
 * PHP 5.6
 * Composer
 * XDebug extension (disabled by default)
+
+`docker pull dalee/php-5.6`
