@@ -1,8 +1,13 @@
 Dockerfile.baseimage
+Dockerfile.baseimage_test
 Dockerfile.nodejs-6
-README.md
+Dockerfile.php-5.6
+.travis.yml
+LICENSE
 Makefile
-build_scripts/build.baseimage.sh
+README.md
+build_scripts/build.diet-image.sh
 build_scripts/build.image.sh
-build_scripts/test-runner.sh
 build_scripts/publish.image.sh
+build_scripts/test.image.sh
+build_scripts/testcase.baseimage.sh
