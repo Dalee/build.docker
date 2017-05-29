@@ -402,7 +402,7 @@ parser.add_argument('main_command', metavar='MAIN_COMMAND', type=str, nargs='*',
                     help='The main command to run. (default: runit)')
 parser.add_argument('--skip-wait-resources', dest='skip_wait_resources',
                     action='store_const', const=True, default=False,
-                    help='Skip running and wait for success/exit for /etc/my_wait.d/* scripts')
+                    help='Skip running/waiting /etc/my_wait.d/*')
 parser.add_argument('--skip-startup-files', dest='skip_startup_files',
                     action='store_const', const=True, default=False,
                     help='Skip running /etc/my_init.d/* and /etc/rc.local')
@@ -411,17 +411,17 @@ parser.add_argument('--skip-runit', dest='skip_runit',
                     help='Do not run runit services')
 parser.add_argument('--skip-wait-services', dest='skip_wait_services',
                     action='store_const', const=True, default=False,
-                    help='Skip running and wait for exit/success for /etc/service/*/check scripts')
+                    help='Skip running/waiting /etc/service/*/check')
 parser.add_argument('--no-kill-all-on-exit', dest='kill_all_on_exit',
                     action='store_const', const=False, default=True,
                     help='Don\'t kill all processes on the system upon exiting')
 parser.add_argument('--quiet', dest='log_level',
                     action='store_const', const=LOG_LEVEL_WARN, default=LOG_LEVEL_INFO,
                     help='Only print warnings and errors')
-parser.add_argument('--wait-services-timeout', dest='wait_services_timeout', type=int, default=30,
-                    help='Services ready global timeout. (default: 30 seconds)')
 parser.add_argument('--wait-resources-timeout', dest='wait_resources_timeout', type=int, default=30,
-                    help='Resources ready global timeout. (default: 30 seconds)')
+                    help='Resources wait global timeout, seconds. (default: 30)')
+parser.add_argument('--wait-services-timeout', dest='wait_services_timeout', type=int, default=30,
+                    help='Services wait global timeout, seconds. (default: 30)')
 
 
 args = parser.parse_args()

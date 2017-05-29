@@ -36,7 +36,7 @@ RUN sed 's/archive.ubuntu.com/mirror.yandex.ru/' -i /etc/apt/sources.list && \
 # nginx: ABF5BD827BD9BF62
 # ansible: 93C4A3FD7BB9C367
 #
-RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
+RUN echo "deb http://nginx.org/packages/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
     echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main" > etc/apt/sources.list.d/ansible.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \

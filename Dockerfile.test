@@ -4,4 +4,15 @@ RUN /sbin/enable_service nginx && \
     /sbin/enable_service cron && \
     /sbin/enable_service sendmail
 
+RUN mkdir /app && chown nobody:nogroup /app && \
+    echo "#!/bin/bash\nenv > /app/env_setuser.txt\n" > /app/cron_setuser.sh && \
+    echo "#!/bin/bash\nenv > /app/env_root.txt\n" > /app/cron_root.sh && \
+    chmod +x /app/cron_*.sh && \
+    echo "#!/bin/bash\n\
+SHELL=/bin/sh\n\
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n\
+* * * * * root /sbin/setuser nobody /app/cron_setuser.sh\n\
+* * * * * root /app/cron_root.sh\n\
+" > /etc/crontab
+
 CMD [ "/sbin/my_init" ]

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-kill -0 $(cat /var/run/nginx.pid)
+kill -0 $(cat /var/run/nginx.pid >/dev/null 2>&1) >/dev/null 2>&1
 exit $?
