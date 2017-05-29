@@ -2,20 +2,23 @@ FROM dalee/baseimage:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Add sources
-RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
-    echo "deb http://deb.nodesource.com/node_6.x xenial main" > /etc/apt/sources.list.d/nodejs.list && \
+#
+# nodejs: 46C2130DFD2497F5
+# yarn: 1655A0AB68576280
+#
+RUN echo "deb http://deb.nodesource.com/node_6.x xenial main" > /etc/apt/sources.list.d/nodejs.list && \
     echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 46C2130DFD2497F5 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1655A0AB68576280 && \
-    apt-get -qq -y update
+    apt-get update -qq
 
-# Install nginx, nodejs and yarn
-RUN apt-get -qq install -y nginx nodejs yarn
+# Install
+RUN apt-get install -qq -y \
+    nodejs \
+    yarn
 
 # Cleanup
-RUN apt-get autoremove --purge && \
+RUN apt-get autoremove -qq --purge && \
     rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
@@ -28,4 +31,5 @@ RUN apt-get autoremove --purge && \
     /var/log/alternatives.log \
     /var/log/bootstrap.log \
     /var/log/dpkg.log \
-    /var/log/apt/*
+    /var/log/apt/* \
+    /tmp/*

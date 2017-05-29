@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+exec /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/nginx.conf

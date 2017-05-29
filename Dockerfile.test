@@ -1,0 +1,7 @@
+FROM dalee/baseimage:latest
+
+RUN /sbin/enable_service nginx && \
+    /sbin/enable_service cron && \
+    /sbin/enable_service sendmail
+
+CMD [ "/sbin/my_init" ]

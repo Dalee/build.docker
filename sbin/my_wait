@@ -1,0 +1,137 @@
+#!/usr/bin/python -u
+# -*- coding: utf-8 -*-
+
+import sys
+import os
+import os.path
+import time
+import argparse
+import stat
+
+def log_fail(message):
+    sys.stderr.write("*** %s\n" % message)
+
+def log_success(message):
+    sys.stdout.write("*** %s\n" % message)
+
+def is_exe(path):
+    try:
+        return os.path.isfile(path) and os.access(path, os.X_OK)
+    except OSError:
+        return False
+
+def listdir(path):
+    try:
+        result = os.stat(path)
+    except OSError:
+        return []
+    if stat.S_ISDIR(result.st_mode):
+        return sorted(os.listdir(path))
+    else:
+        return []
+
+#
+def run(check_command):
+    try:
+        return os.system(check_command)
+    except Exception:
+        return -1
+
+
+#
+def service_check(args):
+    check_path_list = {}
+    for service_name in listdir("/etc/service"):
+        service_path = os.path.join("/etc/service", service_name)
+        if not os.path.isdir(service_path):
+            continue
+
+        disabled_flag = os.path.join(service_path, "down")
+        check_script = os.path.join(service_path, "check")
+        if os.path.exists(disabled_flag) or not os.path.exists(check_script):
+            continue
+
+        if not is_exe(check_script):
+            log_fail("WARNING: %s is not executable, skipping.." % (check_script,))
+            continue
+
+        check_command = "/usr/bin/sv -w 0 check %s | grep -q '^ok:'" % (service_path,)
+        check_path_list[check_command] = True
+
+    # finally, return list of checks to perform..
+    return check_path_list
+
+
+#
+def resource_check(args):
+    check_path_list = {}
+    for check_script in listdir("/etc/my_wait.d"):
+        check_script_path = os.path.join("/etc/my_wait.d", check_script)
+        if not is_exe(check_script_path):
+            log_fail("WARNING: %s is not executable, skipping.." % (check_script,))
+            continue
+
+        check_path_list[check_script_path] = True
+
+    # finally, return list of checks to perform..
+    return check_path_list
+
+
+#
+def main(args):
+    check_command_list = {}
+    success_msg = ""
+
+    if args.wait_services:
+        check_command_list = service_check(args)
+        success_msg = "Services ready"
+    else:
+        check_command_list = resource_check(args)
+        success_msg = "Resources ready"
+
+    # perform timeout checks
+    timeout = int(args.wait_timeout)
+    timeoutAt = time.time() + timeout
+
+    while time.time() < timeoutAt:
+        # have any pending checks?
+        command_list = check_command_list.keys()
+        if len(command_list) == 0:
+            break
+
+        # execute pending checks..
+        for check_command in command_list:
+            if run(check_command) == 0:
+                del check_command_list[check_command]
+
+        # delay and check expire..
+        time.sleep(0.1)
+
+    # any check timed out?
+    failed_checks = check_command_list.keys()
+    if len(failed_checks) > 0:
+        for check_command in failed_checks:
+            log_fail("Script timed out: %s" % (check_command,))
+        sys.exit(1)
+
+    # no, everything is ok..
+    log_success(success_msg)
+    sys.exit(0)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Wait for service/resource')
+    parser.add_argument('--timeout', dest='wait_timeout', type=int, default=30,
+                        help='Set wait global timeout (default: 30 seconds)')
+    parser.add_argument('--resources', dest='wait_resources',
+                        action='store_const', const=True, default=False,
+                        help='Wait until all /etc/my_wait.d scripts return exit_code = 0')
+    parser.add_argument('--services', dest='wait_services',
+                        action='store_const', const=True, default=False,
+                        help='Wait until all /etc/service/<service_name>/check script return exit_code = 0')
+
+    args = parser.parse_args()
+    if args.wait_resources and args.wait_services:
+        log_fail("Either --wait-resources or --wait-services must be provided, not both.")
+        sys.exit(1)
+
+    main(args)

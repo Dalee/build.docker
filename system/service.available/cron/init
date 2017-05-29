@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+#
+# configure bcron
+# @see https://github.com/bruceg/bcron
+#
+
+mkdir -p /var/spool/cron/crontabs /var/spool/cron/tmp
+mkfifo /var/spool/cron/trigger
+chmod go-rwx /var/spool/cron/crontabs
+chmod go-rwx /var/spool/cron/tmp
+chmod go-rwx /var/spool/cron/trigger
+
+# touch /etc/crontab before starting cron
+# (fix for xfs/overlay)
+#
+# @see https://github.com/moby/moby/issues/16813
+# @see https://github.com/moby/moby/issues/16813#issuecomment-187717343
+
+touch /etc/crontab
+chmod 600 /etc/crontab

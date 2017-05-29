@@ -1,6 +1,0 @@
-#!/bin/bash
-set -eo pipefail
-
-# touch /etc/crontab before running will allow cron work on xfs_overlay
-touch /etc/crontab
-exec env BCRON_USER=root /usr/sbin/bcron-update /etc/crontab >/dev/null 2>&1

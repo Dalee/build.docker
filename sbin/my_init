@@ -5,6 +5,9 @@
 # Original file:
 # https://github.com/phusion/baseimage-docker/blob/master/image/bin/my_init
 #
+# Runit:
+# @see http://smarden.org/runit/
+#
 
 import argparse
 import errno
@@ -326,26 +329,34 @@ def wait_for_runit_services():
             shutdown_runit_services(True)
 
 
-def install_insecure_key():
-    info("Installing insecure SSH key for user root")
-    run_command_killable("/usr/sbin/enable_insecure_key")
-
-
 def main(args):
+    if not args.skip_startup_files and not args.skip_runit:
+        info("Starting system...")
+
     import_envvars(False, False)
     export_envvars()
 
-    if args.enable_insecure_key:
-        install_insecure_key()
-
     if not args.skip_startup_files:
+        # Wait for external resources to be ready
+        if not args.skip_wait_resources:
+            info("Waiting for resources...")
+            run_command_killable("/sbin/my_wait", "--resources",
+                                 "--timeout=%d" % (args.wait_resources_timeout,))
         run_startup_files()
 
     runit_exited = False
     exit_code = None
 
     if not args.skip_runit:
+        # Runit
         runit_pid = start_runit()
+
+        # Wait for all runite services to be ready
+        if not args.skip_wait_services:
+            info("Waiting for services...")
+            run_command_killable("/sbin/my_wait", "--services",
+                                 "--timeout=%d" % (args.wait_services_timeout,))
+
     try:
         exit_status = None
         if len(args.main_command) == 0:
@@ -389,21 +400,30 @@ def main(args):
 parser = argparse.ArgumentParser(description='Initialize the system.')
 parser.add_argument('main_command', metavar='MAIN_COMMAND', type=str, nargs='*',
                     help='The main command to run. (default: runit)')
-parser.add_argument('--enable-insecure-key', dest='enable_insecure_key',
+parser.add_argument('--skip-wait-resources', dest='skip_wait_resources',
                     action='store_const', const=True, default=False,
-                    help='Install the insecure SSH key')
+                    help='Skip running and wait for success/exit for /etc/my_wait.d/* scripts')
 parser.add_argument('--skip-startup-files', dest='skip_startup_files',
                     action='store_const', const=True, default=False,
                     help='Skip running /etc/my_init.d/* and /etc/rc.local')
 parser.add_argument('--skip-runit', dest='skip_runit',
                     action='store_const', const=True, default=False,
                     help='Do not run runit services')
+parser.add_argument('--skip-wait-services', dest='skip_wait_services',
+                    action='store_const', const=True, default=False,
+                    help='Skip running and wait for exit/success for /etc/service/*/check scripts')
 parser.add_argument('--no-kill-all-on-exit', dest='kill_all_on_exit',
                     action='store_const', const=False, default=True,
                     help='Don\'t kill all processes on the system upon exiting')
 parser.add_argument('--quiet', dest='log_level',
                     action='store_const', const=LOG_LEVEL_WARN, default=LOG_LEVEL_INFO,
                     help='Only print warnings and errors')
+parser.add_argument('--wait-services-timeout', dest='wait_services_timeout', type=int, default=30,
+                    help='Services ready global timeout. (default: 30 seconds)')
+parser.add_argument('--wait-resources-timeout', dest='wait_resources_timeout', type=int, default=30,
+                    help='Resources ready global timeout. (default: 30 seconds)')
+
+
 args = parser.parse_args()
 log_level = args.log_level
 
