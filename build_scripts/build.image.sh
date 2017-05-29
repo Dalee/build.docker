@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-IMAGE_DIET="dalee/${IMAGE}:${VERSION}"
+IMAGE_FULL="dalee/${IMAGE}:${VERSION}"
 
-echo "Building image: ${IMAGE_DIET}"
-docker build -t ${IMAGE_DIET} . -f "./Dockerfile.${IMAGE}"
+echo "Building image: ${IMAGE_FULL}"
+docker build --squash -t ${IMAGE_FULL} . -f "./Dockerfile.${IMAGE}"

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-IMAGE_FULL="dalee/baseimage:fat"
-IMAGE_DIET="dalee/baseimage:${VERSION}"
+IMAGE_FULL="dalee/${IMAGE}:fat"
+IMAGE_DIET="dalee/${IMAGE}:${VERSION}"
 
 echo "Building: ${IMAGE_FULL}"
-docker build -t ${IMAGE_FULL} . -f "./Dockerfile.baseimage"
+docker build -t ${IMAGE_FULL} . -f "./Dockerfile.${IMAGE}"
 
 echo "Squashing: ${IMAGE_FULL}"
 ID=$(docker run -d ${IMAGE_FULL} /bin/bash)

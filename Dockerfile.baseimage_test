@@ -4,9 +4,9 @@ RUN /sbin/enable_service nginx && \
     /sbin/enable_service cron && \
     /sbin/enable_service sendmail
 
-RUN echo "#!/bin/bash\nsleep 2 && exit 0\n" > /etc/my_wait.d/00_tmpmount.sh && \
-    echo "#!/bin/bash\nsleep 2 && exit 0\n" > /etc/my_wait.d/01_tmpmount.sh && \
-    chmod +x /etc/my_wait.d/0?_tmpmount.sh
+RUN echo "#!/bin/bash\nsleep 1 && exit 0\n" > /etc/my_wait.d/00_resource.sh && \
+    echo "#!/bin/bash\nexit 0\n" > /etc/my_wait.d/01_resource.sh && \
+    chmod +x /etc/my_wait.d/0?_resource.sh
 
 RUN mkdir /app && chown nobody:nogroup /app && \
     echo "#!/bin/bash\nenv > /app/env_setuser.txt\n" > /app/cron_setuser.sh && \
