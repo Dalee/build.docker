@@ -331,15 +331,14 @@ def wait_for_runit_services():
 
 def main(args):
     if not args.skip_startup_files and not args.skip_runit:
-        info("Starting system...")
+        info("Starting container...")
 
     import_envvars(False, False)
     export_envvars()
 
     if not args.skip_startup_files:
-        # Wait for external resources to be ready
+        # Wait for external resources to be ready before run startup files
         if not args.skip_wait_resources:
-            info("Waiting for resources...")
             run_command_killable("/sbin/my_wait", "--resources",
                                  "--timeout=%d" % (args.wait_resources_timeout,))
         run_startup_files()
@@ -351,9 +350,10 @@ def main(args):
         # Runit
         runit_pid = start_runit()
 
-        # Wait for all runite services to be ready
+        # After runit started, wait for services to be ready
+        # since services work on background, this will act
+        # as initial healthcheck for container.
         if not args.skip_wait_services:
-            info("Waiting for services...")
             run_command_killable("/sbin/my_wait", "--services",
                                  "--timeout=%d" % (args.wait_services_timeout,))
 

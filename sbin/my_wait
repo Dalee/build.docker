@@ -39,7 +39,7 @@ def run(check_command):
 
 
 #
-def service_check(args):
+def service_check():
     check_path_list = {}
     for service_name in listdir("/etc/service"):
         service_path = os.path.join("/etc/service", service_name)
@@ -63,7 +63,7 @@ def service_check(args):
 
 
 #
-def resource_check(args):
+def resource_check():
     check_path_list = {}
     for check_script in listdir("/etc/my_wait.d"):
         check_script_path = os.path.join("/etc/my_wait.d", check_script)
@@ -81,18 +81,26 @@ def resource_check(args):
 def main(args):
     check_command_list = {}
     success_msg = ""
+    waiting_msg = ""
 
     if args.wait_services:
-        check_command_list = service_check(args)
+        check_command_list = service_check()
+        waiting_msg = "Waiting for services..."
         success_msg = "Services ready"
-    else:
-        check_command_list = resource_check(args)
+
+    if args.wait_resources:
+        check_command_list = resource_check()
+        waiting_msg = "Waiting for resources..."
         success_msg = "Resources ready"
+
+    if len(check_command_list) == 0:
+        sys.exit(0)
 
     # perform timeout checks
     timeout = int(args.wait_timeout)
     timeoutAt = time.time() + timeout
 
+    log_success(waiting_msg)
     while time.time() < timeoutAt:
         # have any pending checks?
         command_list = check_command_list.keys()

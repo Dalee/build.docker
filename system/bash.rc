@@ -5,5 +5,5 @@ export LC_ALL=en_US.UTF-8
 # setting default exports for interactive sessions
 [ ! -t 1 ] && return
 export TERM=xterm
-export PS1='[\033[32m\]\w\]\033[00m\]] > '
+export PS1="\[\033[32m\w\]\033[00m > "
 export EDITOR=vim

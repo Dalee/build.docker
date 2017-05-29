@@ -7,10 +7,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 #
 RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt/sources.list.d/php56.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
-    apt-get update -qq
+    apt-get -qq update
 
 # Install
-RUN apt-get install -qq -y php5.6-common \
+RUN apt-get -qq install -y \
+    php5.6-common \
     php5.6-cli \
     php5.6-fpm \
     php5.6-pgsql \
@@ -43,7 +44,8 @@ RUN echo "\nexport COMPOSER_ALLOW_SUPERUSER=1\n" >> /root/.bashrc && \
     echo ";zend_extension=xdebug.so\n" > /etc/php/5.6/fpm/conf.d/20-xdebug.ini
 
 # Cleanup
-RUN apt-get autoremove -qq --purge && \
+RUN apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
     rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \

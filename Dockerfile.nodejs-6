@@ -10,15 +10,16 @@ RUN echo "deb http://deb.nodesource.com/node_6.x xenial main" > /etc/apt/sources
     echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 46C2130DFD2497F5 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1655A0AB68576280 && \
-    apt-get update -qq
+    apt-get -qq update
 
 # Install
-RUN apt-get install -qq -y \
+RUN apt-get -qq install -y \
     nodejs \
     yarn
 
 # Cleanup
-RUN apt-get autoremove -qq --purge && \
+RUN apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
     rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
