@@ -16,9 +16,6 @@ before_install:
 script:
   - sudo make build
   - sudo make test
-  - docker save dalee/baseimage:latest | gzip > ${CACHE_BASEIMAGE}
-  - docker save dalee/php-5.6:latest | gzip > ${CACHE_PHP56}
-  - docker save dalee/nodejs-6:latest | gzip > ${CACHE_NODEJS6}
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then sudo make publish; fi
