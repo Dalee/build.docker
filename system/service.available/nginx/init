@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+#
+# create default directories (if not exists)
+# baseimage is removing nginx.conf, so, if nginx.conf is absent
+# install default one.
+#
+
+if [ ! -d /etc/nginx/virtuals ]; then
+    mkdir -p /etc/nginx/virtuals
+fi
+
+if [ ! -e /etc/nginx/nginx.conf ]; then
+    # if symlink exists, but points to nowhere..
+    ln -sf /etc/service.available/nginx/nginx.conf /etc/nginx/nginx.conf
+fi

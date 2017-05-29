@@ -9,10 +9,13 @@ fi
 docker login -u="$DOCKER_LOGIN" -p="$DOCKER_PASSWORD"
 
 IMAGE_VERSION="dalee/${IMAGE}:${VERSION}"
-docker push ${IMAGE_VERSION}
-
 if [ ! -z "${TRAVIS_TAG}" ]; then
+    # tagged version release
     IMAGE_RELEASE="dalee/${IMAGE}:${TRAVIS_TAG}"
+
     docker tag ${IMAGE_VERSION} ${IMAGE_RELEASE}
     docker push ${IMAGE_RELEASE}
+else
+    # latest version release
+    docker push ${IMAGE_VERSION}
 fi

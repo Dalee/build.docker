@@ -14,41 +14,47 @@ path-exclude /usr/lib/valgrind/*\n\
 " > /etc/dpkg/dpkg.cfg.d/docker-no-documentation
 
 RUN echo "# disable recommends and suggests\n\
-APT::Install-Recommends "0";\n\
-APT::Install-Suggests "0";\n\
+APT::Install-Recommends \"0\";\n\
+APT::Install-Suggests \"0\";\n\
 " > /etc/apt/apt.conf.d/docker-no-suggests
 
 RUN echo "# disable suggestions\n\
-APT::Install-Recommends "false";\n\
-APT::AutoRemove::RecommendsImportant "false";\n\
-APT::AutoRemove::SuggestsImportant "false";\n\
+APT::Install-Recommends \"false\";\n\
+APT::AutoRemove::RecommendsImportant \"false\";\n\
+APT::AutoRemove::SuggestsImportant \"false\";\n\
 " > /etc/apt/apt.conf.d/docker-autoremove-suggests
 
 # Cleanup, upgrade and install apt-utils
-RUN apt-get -qq remove -y insserv && \
-    dpkg --purge `dpkg --get-selections | grep deinstall | cut -f1` && \
-    apt-get -qq dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold" && \
-    apt-get -qq -y update && \
+RUN sed 's/archive.ubuntu.com/mirror.yandex.ru/' -i /etc/apt/sources.list && \
+    apt-get -qq remove --purge -y insserv && \
+    apt-get -qq dist-upgrade -y -o Dpkg::Options::="--force-confold" && \
+    apt-get -qq update && \
     apt-get -qq install -y apt-utils
 
-# Base setup
-RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main" > etc/apt/sources.list.d/ansible.list && \
+#
+# nginx: ABF5BD827BD9BF62
+# ansible: 93C4A3FD7BB9C367
+#
+RUN echo "deb http://nginx.org/packages/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
+    echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu xenial main" > etc/apt/sources.list.d/ansible.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
-    apt-get -qq -y update
+    apt-get -qq update
 
 # Install mandatory software
-RUN apt-get -qq install -y --no-install-recommends \
+RUN apt-get -qq install -y \
     tzdata \
     runit \
     htop \
     psmisc \
+    nginx \
     bcron \
     nullmailer \
+    ansible \
     net-tools \
     locales \
     apt-transport-https \
     ca-certificates \
-    ansible \
     vim-tiny \
     make \
     curl \
@@ -60,8 +66,18 @@ RUN locale-gen en_US.UTF-8 ru_RU.UTF-8 && \
     update-ca-certificates --fresh
 
 # Cleanup
-RUN apt-get -qq autoremove --purge && \
+# + remove default configuration files for nginx, and cron.
+RUN apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
     rm -rf \
+    /etc/cron.* \
+    /etc/nginx/nginx.conf \
+    /etc/alternatives/*.gz \
+    /etc/dbus-1/* \
+    /etc/dhcp/dhclient-exit-hooks.d/* \
+    /etc/update-motd.d/* \
+    /etc/rc?.d/* \
+    /etc/init.d/* \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
     /usr/share/man/* \
@@ -73,7 +89,8 @@ RUN apt-get -qq autoremove --purge && \
     /var/log/alternatives.log \
     /var/log/bootstrap.log \
     /var/log/dpkg.log \
-    /var/log/apt/*
+    /var/log/apt/* \
+    /tmp/*
 
 # Perform configuration
 COPY . /build/

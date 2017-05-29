@@ -1,0 +1,56 @@
+#!/usr/bin/python -u
+# -*- coding: utf-8 -*-
+
+import sys
+import os
+import os.path
+import stat
+
+def is_exe(path):
+    try:
+        return os.path.isfile(path) and os.access(path, os.X_OK)
+    except OSError:
+        return False
+
+def main():
+    ''' Enable predefined baseimage services
+    '''
+    service_name = sys.argv[1]
+    service_path = os.path.join("/etc/service.available", service_name)
+    service_init = os.path.join(service_path, "init")
+
+    # check if it's known service
+    if not os.path.isdir(service_path):
+        sys.stderr.write("ERROR: unknown service: %s\n" % (service_name,))
+        sys.exit(1)
+
+    # install init entry (if exists)
+    if is_exe(service_init):
+        service_init_target = "/etc/my_init.d/00_baseimage_%s.sh" % (service_name,)
+        os.symlink(service_init, service_init_target)
+        sys.stdout.write("Installed %s\n" % (service_init_target,))
+
+    # install runit entries
+    components = os.listdir(service_path)
+    for service in components:
+        service_component_path = os.path.join(service_path, service)
+        if not os.path.isdir(service_component_path):
+            continue
+
+        service_component_run = os.path.join(service_component_path, "run")
+        service_component_entry = os.path.join("/etc/service", service)
+
+        # if executable
+        if is_exe(service_component_run):
+            os.symlink(service_component_path, service_component_entry)
+            sys.stdout.write("Installed %s\n" % (service_component_entry,))
+        else:
+            sys.stderr.write("WARNING: %s not found, skipping..\n" % (service_component_run,))
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.stderr.write("Usage: /sbin/enable_service SERVICE\n")
+        sys.exit(1)
+
+    main()
+

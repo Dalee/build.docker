@@ -2,15 +2,15 @@ FROM dalee/baseimage:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Add sources
-RUN echo "deb http://nginx.org/packages/mainline/ubuntu/ xenial nginx" > /etc/apt/sources.list.d/nginx.list && \
-    echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt/sources.list.d/php56.list && \
+#
+# php: 4F4EA0AAE5267A6C
+#
+RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt/sources.list.d/php56.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
-    apt-get -qq -y update
+    apt-get -qq update
 
-# Install nginx and php
-RUN apt-get install -y nginx \
+# Install
+RUN apt-get -qq install -y \
     php5.6-common \
     php5.6-cli \
     php5.6-fpm \
@@ -44,7 +44,8 @@ RUN echo "\nexport COMPOSER_ALLOW_SUPERUSER=1\n" >> /root/.bashrc && \
     echo ";zend_extension=xdebug.so\n" > /etc/php/5.6/fpm/conf.d/20-xdebug.ini
 
 # Cleanup
-RUN apt-get autoremove --purge && \
+RUN apt-get -qq clean && \
+    apt-get -qq autoremove --purge && \
     rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
@@ -57,4 +58,5 @@ RUN apt-get autoremove --purge && \
     /var/log/alternatives.log \
     /var/log/bootstrap.log \
     /var/log/dpkg.log \
-    /var/log/apt/*
+    /var/log/apt/* \
+    /tmp/*

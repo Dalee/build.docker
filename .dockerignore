@@ -2,7 +2,7 @@ Dockerfile.baseimage
 Dockerfile.nodejs-6
 README.md
 Makefile
-scripts/build.baseimage.sh
-scripts/build.image.sh
-scripts/test-runner.sh
-scripts/publish.image.sh
+build_scripts/build.baseimage.sh
+build_scripts/build.image.sh
+build_scripts/test-runner.sh
+build_scripts/publish.image.sh

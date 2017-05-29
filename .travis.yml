@@ -4,6 +4,10 @@ sudo: required
 on:
   tags: true
 
+cache:
+  directories:
+    - $CACHE_DIR
+
 services:
   - docker
 
@@ -12,11 +16,25 @@ before_install:
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - echo 'DOCKER_OPTS="--experimental=true"' | sudo tee /etc/default/docker
   - sudo service docker restart
+  - if [ -f ${CACHE_BASEIMAGE} ]; then gunzip -c ${CACHE_BASEIMAGE} | docker load; fi
+  - if [ -f ${CACHE_PHP56} ]; then gunzip -c ${CACHE_PHP56} | docker load; fi
+  - if [ -f ${CACHE_NODEJS6} ]; then gunzip -c ${CACHE_NODEJS6} | docker load; fi
 
 script:
   - sudo make build
   - sudo make test
+  - docker save dalee/baseimage:latest | gzip > ${CACHE_BASEIMAGE}
+  - docker save dalee/php-5.6:latest | gzip > ${CACHE_PHP56}
+  - docker save dalee/nodejs-6:latest | gzip > ${CACHE_NODEJS6}
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then sudo make publish; fi
   - if [ ! -z "$TRAVIS_TAG" ]; then sudo make publish; fi
+
+env:
+  global:
+    - CACHE_DIR="$HOME/.docker_cache"
+    - CACHE_BASEIMAGE="$CACHE_DIR/baseimage.tar.gz"
+    - CACHE_PHP56="$CACHE_DIR/php56.tar.gz"
+    - CACHE_NODEJS6="$CACHE_DIR/nodejs6.tar.gz"
+

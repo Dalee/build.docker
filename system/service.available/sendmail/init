@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+#
+# configure nullmailer:
+# @see https://github.com/bruceg/nullmailer
+#
+
+RELAY_LIST=""
+HOST="docker"
+
+if [ ! -z "${NULLMAILER_REMOTES}" ]; then REMOTES="${NULLMAILER_REMOTES}"; fi
+if [ ! -z "${NULLMAILER_HOSTNAME}" ]; then HOST="${NULLMAILER_HOSTNAME}"; fi
+
+echo "${RELAY_LIST}" > "/etc/nullmailer/remotes"
+echo "${HOST}" > "/etc/nullmailer/me"
+
+chown nobody:nogroup /etc/nullmailer/remotes /etc/nullmailer/me
+chmod 0600 /etc/nullmailer/remotes /etc/nullmailer/me
+
+mkdir -p /etc/nullmailer /var/spool/nullmailer/queue
+mkfifo /var/spool/nullmailer/trigger
+chown nobody:nogroup /var/spool/nullmailer/queue /var/spool/nullmailer/trigger /etc/nullmailer

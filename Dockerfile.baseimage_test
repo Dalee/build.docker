@@ -1,0 +1,22 @@
+FROM dalee/baseimage:latest
+
+RUN /sbin/enable_service nginx && \
+    /sbin/enable_service cron && \
+    /sbin/enable_service sendmail
+
+RUN echo "#!/bin/bash\nsleep 1 && exit 0\n" > /etc/my_wait.d/00_resource.sh && \
+    echo "#!/bin/bash\nexit 0\n" > /etc/my_wait.d/01_resource.sh && \
+    chmod +x /etc/my_wait.d/0?_resource.sh
+
+RUN mkdir /app && chown nobody:nogroup /app && \
+    echo "#!/bin/bash\nenv > /app/env_setuser.txt\n" > /app/cron_setuser.sh && \
+    echo "#!/bin/bash\nenv > /app/env_root.txt\n" > /app/cron_root.sh && \
+    chmod +x /app/cron_*.sh && \
+    echo "#!/bin/bash\n\
+SHELL=/bin/sh\n\
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n\
+* * * * * root /sbin/setuser nobody /app/cron_setuser.sh\n\
+* * * * * root /app/cron_root.sh\n\
+" > /etc/crontab
+
+CMD [ "/sbin/my_init" ]
