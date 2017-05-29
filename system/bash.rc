@@ -1,4 +1,4 @@
-# setting default lang, even for non-interactive sessions
+# setting default lang even for non-interactive sessions
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 

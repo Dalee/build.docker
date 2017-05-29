@@ -4,8 +4,8 @@ RUN /sbin/enable_service nginx && \
     /sbin/enable_service cron && \
     /sbin/enable_service sendmail
 
-RUN echo "#!/bin/bash\nsleep 18 && exit 0\n" > /etc/my_wait.d/00_tmpmount.sh && \
-    echo "#!/bin/bash\nsleep 18 && exit 0\n" > /etc/my_wait.d/01_tmpmount.sh && \
+RUN echo "#!/bin/bash\nsleep 2 && exit 0\n" > /etc/my_wait.d/00_tmpmount.sh && \
+    echo "#!/bin/bash\nsleep 2 && exit 0\n" > /etc/my_wait.d/01_tmpmount.sh && \
     chmod +x /etc/my_wait.d/0?_tmpmount.sh
 
 RUN mkdir /app && chown nobody:nogroup /app && \

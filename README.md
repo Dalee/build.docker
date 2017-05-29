@@ -41,8 +41,8 @@ Container control:
 * [tzdata](https://packages.ubuntu.com/xenial/tzdata)
 * [ca-certificates](https://packages.ubuntu.com/xenial/ca-certificates)
 
-> Beware, `baseimage` doesn't contain `top` and `ps` commands due Ubuntu's dependencies,
-`htop` and `pstree` provided as replacements.
+> Beware, `baseimage` doesn't contain `top` and `ps` commands due Ubuntu's dependencies.
+Commands `htop` and `pstree` provided as replacements.
 
 ### Defaults
 
