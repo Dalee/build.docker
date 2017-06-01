@@ -177,12 +177,6 @@ this option by default.
 
 `docker pull dalee/php-5.6`
 
-## Releases
-
-* `latest` — represent latest `master` branch
-* `X.Y.Z` — represent tagged release
-
-
 <a name="php7"></a>
 ## PHP 7
 
