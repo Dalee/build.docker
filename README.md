@@ -8,11 +8,15 @@
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
 
 > `baseimage` is inspired by [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker).
-It uses same directory layout for defining services, therefore it compatible with original one.
+It uses same directory layout for defining services, therefore it compatible with original one. 
 
 * Ubuntu 16.04 LTS 
 * Tiny size and low memory footprint
 * Painless deploy
+* Prebuilt images:
+    * <a href="#php56">PHP 5.6</a>
+    * <a href="#php7">PHP 7.1</a>
+    * <a href="#nodejs6">Node JS v6</a>
 
 ### Integrated services
 
@@ -146,6 +150,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 > Do not use `daemon off`, [run script](system/service.available/nginx/nginx/run) will provide
 this option by default.
 
+<a name="nodejs6"></a>
 ## Node.JS 6
 
 [![](https://images.microbadger.com/badges/image/dalee/nodejs-6.svg)](https://microbadger.com/images/dalee/nodejs-6 "Get your own image badge on microbadger.com")
@@ -158,7 +163,8 @@ this option by default.
 
 `docker pull dalee/nodejs-6`
 
-## PHP 5.6 image
+<a name="php56"></a>
+## PHP 5.6
 
 [![](https://images.microbadger.com/badges/image/dalee/php-5.6.svg)](https://microbadger.com/images/dalee/php-5.6 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/php-5.6.svg)](https://microbadger.com/images/dalee/php-5.6 "Get your own version badge on microbadger.com")
@@ -170,6 +176,26 @@ this option by default.
 * XDebug extension (disabled by default)
 
 `docker pull dalee/php-5.6`
+
+## Releases
+
+* `latest` — represent latest `master` branch
+* `X.Y.Z` — represent tagged release
+
+
+<a name="php7"></a>
+## PHP 7
+
+[![](https://images.microbadger.com/badges/image/dalee/php-7.svg)](https://microbadger.com/images/dalee/php-7 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dalee/php-7.svg)](https://microbadger.com/images/dalee/php-7 "Get your own version badge on microbadger.com")
+
+> Image is squashed, so actually it contains only two layers.
+
+* PHP 7.1
+* Composer
+* XDebug extension (disabled by default)
+
+`docker pull dalee/php-7`
 
 ## Releases
 
