@@ -1,7 +1,7 @@
 VERSION ?= "latest"
 BASEIMAGE := "baseimage"
 PHP56 := "php-5.6"
-PHP7 := "php-71"
+PHP7 := "php-7.1"
 NODEJS6 := "nodejs-6"
 
 build:
