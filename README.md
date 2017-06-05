@@ -8,7 +8,8 @@
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
 
 > `baseimage` is inspired by [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker).
-It uses same directory layout for defining services, therefore it compatible with original one. 
+It uses same directory layout for defining services, patched versions of `my_init` and `setuser` 
+(but compatible with original one), but, build from scratch. 
 
 * Ubuntu 16.04 LTS 
 * Tiny size and low memory footprint
@@ -16,7 +17,7 @@ It uses same directory layout for defining services, therefore it compatible wit
 * Prebuilt images:
     * <a href="#php56">PHP 5.6</a>
     * <a href="#php71">PHP 7.1</a>
-    * <a href="#nodejs6">Node JS v6</a>
+    * <a href="#nodejs6">Node.js 6</a>
 
 ### Integrated services
 
@@ -164,7 +165,7 @@ this option by default.
 
 > Image is squashed, so actually it contains only two layers.
 
-* Node.JS 6 LTS
+* Node.js 6 LTS
 * Yarn
 
 `docker pull dalee/nodejs-6`
