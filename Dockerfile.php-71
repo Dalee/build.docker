@@ -11,23 +11,23 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt
 
 # Install
 RUN apt-get -qq install -y \
-    php-common \
-    php-cli \
-    php-fpm \
-    php-pgsql \
-    php-mysql \
-    php-gd \
-    php-bz2 \
-    php-zip \
-    php-json \
-    php-xml \
-    php-curl \
-    php-intl \
-    php-mbstring \
-    php-mcrypt \
-    php-bcmath \
-    php-soap \
-    php-xdebug
+    php7.1-common \
+    php7.1-cli \
+    php7.1-fpm \
+    php7.1-pgsql \
+    php7.1-mysql \
+    php7.1-gd \
+    php7.1-bz2 \
+    php7.1-zip \
+    php7.1-json \
+    php7.1-xml \
+    php7.1-curl \
+    php7.1-intl \
+    php7.1-mbstring \
+    php7.1-mcrypt \
+    php7.1-bcmath \
+    php7.1-soap \
+    php7.1-xdebug
 
 # Install composer
 RUN curl "https://getcomposer.org/installer" -o /tmp/composer-installer.php && \
