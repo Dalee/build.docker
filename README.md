@@ -15,7 +15,7 @@ It uses same directory layout for defining services, therefore it compatible wit
 * Painless deploy
 * Prebuilt images:
     * <a href="#php56">PHP 5.6</a>
-    * <a href="#php7">PHP 7.1</a>
+    * <a href="#php71">PHP 7.1</a>
     * <a href="#nodejs6">Node JS v6</a>
 
 ### Integrated services
@@ -27,9 +27,10 @@ It uses same directory layout for defining services, therefore it compatible wit
 * [nullmailer](https://github.com/bruceg/nullmailer) - smtp relay/sendmail service, disabled by default
 * [bcron](https://github.com/bruceg/bcron) - cron service, disabled by default
 
-Container control:
-* <a href="#enabling-services">Enabling integrated services</a>
+### Container control
+
 * <a href="#container-lifecyle">Lifecycle</a>
+* <a href="#enabling-services">Enabling integrated services</a>
 * <a href="#sudo-su">Running as another user</a>
 
 ### Integrated software
@@ -105,6 +106,11 @@ Each phase will run only if previous finished gracefully.
 
 `/sbin/setuser username command [arguments]`
 
+Command environment will be explicitly filled with container defined
+environment variables. Variables filled without overwriting, so,
+call `NODE_ENV=staging /sbin/setuser env | grep NODE_ENV` will print
+`staging` no matter what is defined in `/etc/container_environment/NODE_ENV`.
+
 <a name="enabling-services"></a>
 ### Enabling integrated services
 
@@ -177,8 +183,8 @@ this option by default.
 
 `docker pull dalee/php-5.6`
 
-<a name="php7"></a>
-## PHP 7
+<a name="php71"></a>
+## PHP 7.1
 
 [![](https://images.microbadger.com/badges/image/dalee/php-7.svg)](https://microbadger.com/images/dalee/php-7 "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/dalee/php-7.svg)](https://microbadger.com/images/dalee/php-7 "Get your own version badge on microbadger.com")
@@ -189,9 +195,9 @@ this option by default.
 * Composer
 * XDebug extension (disabled by default)
 
-`docker pull dalee/php-7`
+`docker pull dalee/php-71`
 
 ## Releases
 
-* `latest` — represent latest `master` branch
-* `X.Y.Z` — represent tagged release
+* `latest` — latest `master` branch
+* `vX.Y.Z` — tagged release
