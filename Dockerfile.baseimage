@@ -43,7 +43,11 @@ RUN echo "deb http://nginx.org/packages/ubuntu/ xenial nginx" > /etc/apt/sources
 
 # Install mandatory software
 RUN apt-get -qq install -y \
+    apt-transport-https \
     tzdata \
+    locales \
+    ca-certificates \
+    vim-tiny \
     runit \
     htop \
     psmisc \
@@ -52,12 +56,9 @@ RUN apt-get -qq install -y \
     nullmailer \
     ansible \
     net-tools \
-    locales \
-    apt-transport-https \
-    ca-certificates \
-    vim-tiny \
-    make \
     curl \
+    telnet \
+    make \
     less
 
 # Setup locale and update CA
