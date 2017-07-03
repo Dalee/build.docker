@@ -28,3 +28,9 @@ ln -s /usr/bin/vim.tiny /usr/bin/vim
 
 # .bashrc
 cp -f /build/system/bash.rc /root/.bashrc
+
+
+# some mandatory fixes for services
+mkdir -p /etc/nginx/virtuals
+chown mail:root /usr/sbin/nullmailer-queue
+chmod u+s /usr/sbin/nullmailer-queue

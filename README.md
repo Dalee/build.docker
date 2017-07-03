@@ -130,10 +130,10 @@ Sample `/etc/crontab` file:
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# script with environment variables
+# script WITH container environment variables
 * * * * * root /sbin/setuser nobody /app/app_cron.sh
 
-# script without environment variables
+# script WITHOUT container environment variables
 * * * * * root /app/system_cleanup.sh
 ```
 
@@ -144,6 +144,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 * Configure: provide environment variables on container start:
     * `NULLMAILER_REMOTES` - see section `remotes` from [man page](http://manpages.ubuntu.com/manpages/xenial/man8/nullmailer-send.8.html) 
     * `NULLMAILER_HOSTNAME` - hostname (default is "docker")
+
+Sample `docker run` command:
+```
+docker run --rm \
+	-e NULLMAILER_HOSTNAME="example.com" \
+	-e NULLMAILER_REMOTES="smtp.example.com smtp --port=25" \
+	...
+```
 
 #### Nginx
 

@@ -1,6 +1,8 @@
 FROM dalee/baseimage:latest
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive \
+    LOCALE=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8
 
 #
 # nodejs: 46C2130DFD2497F5
