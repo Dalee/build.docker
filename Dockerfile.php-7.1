@@ -2,7 +2,8 @@ FROM dalee/baseimage:latest
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LOCALE=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    COMPOSER_ALLOW_SUPERUSER=1
 
 #
 # php: 4F4EA0AAE5267A6C
@@ -30,6 +31,7 @@ RUN apt-get -qq install -y \
     php7.1-bcmath \
     php7.1-soap \
     php7.1-memcached \
+    php5.6-redis \
     php7.1-xdebug
 
 # Install composer

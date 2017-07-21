@@ -2,7 +2,8 @@ FROM dalee/baseimage:latest
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LOCALE=en_US.UTF-8 \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=en_US.UTF-8 \
+    COMPOSER_ALLOW_SUPERUSER=1
 
 #
 # php: 4F4EA0AAE5267A6C
@@ -31,6 +32,7 @@ RUN apt-get -qq install -y \
     php5.6-soap \
     php5.6-opcache \
     php5.6-memcached \
+    php5.6-redis \
     php5.6-xdebug
 
 # Install composer
