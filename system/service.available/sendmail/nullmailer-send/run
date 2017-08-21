@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -eo pipefail
-
-# start nullmailer:
-# @see https://github.com/bruceg/nullmailer
-
-exec /sbin/setuser mail /usr/sbin/nullmailer-send >/dev/null 2>&1

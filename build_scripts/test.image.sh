@@ -17,7 +17,7 @@ echo "Building ${IMAGE_VERSION}"
 IMAGE_ID=$(docker build --quiet -t "${IMAGE_VERSION}" . -f "./Dockerfile.${IMAGE}_test")
 
 echo "==> Starting container: ${IMAGE_VERSION}..."
-CONTAINER_ID=$(docker run -d -v ${PWD}/build_scripts:/build_scripts ${IMAGE_ID})
+CONTAINER_ID=$(docker run -d -e SENDMAIL_HOST="mail.example.com" -v ${PWD}/build_scripts:/build_scripts ${IMAGE_ID})
 sleep 5
 
 echo "==> Starting testcase: ${TESTCASE}..."

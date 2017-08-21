@@ -2,19 +2,31 @@
 set -eo pipefail
 
 #
-# fetching current options
+# if SENDMAIL_HOST is set, forward mail to that host.
+# if SENDMAIL_PORT is set, use port from environment.
 #
-RELAY=""
-HOST="docker"
-if [ ! -z "${NULLMAILER_REMOTES}" ]; then RELAY="${NULLMAILER_REMOTES}"; fi
-if [ ! -z "${NULLMAILER_HOSTNAME}" ]; then HOST="${NULLMAILER_HOSTNAME}"; fi
+if [ -z "${SENDMAIL_HOST}" ]; then
+    echo "==> Environment variable SENDMAIL_HOST is not set, skipping configuration..."
+    exit 0
+fi
+if [ -z "${SENDMAIL_PORT}" ]; then
+    SENDMAIL_PORT="25"
+fi
 
-mkdir -p /etc/nullmailer
-echo "${RELAY}" > "/etc/nullmailer/remotes"
-echo "${HOST}" > "/etc/nullmailer/me"
-chmod 0600 /etc/nullmailer/remotes /etc/nullmailer/me
-chown mail:root /etc/nullmailer/remotes /etc/nullmailer/me
+#
+# create system-wide configuration file.
+#
+SENDMAIL_HOST=${SENDMAIL_HOST} \
+SENDMAIL_PORT=${SENDMAIL_PORT} \
+envsubst <<"EOF" > /etc/msmtprc
+defaults
+account default
+auto_from on
+host $SENDMAIL_HOST
+port $SENDMAIL_PORT
+EOF
 
-mkdir -p /var/spool/nullmailer/queue /var/spool/nullmailer/tmp
-mkfifo /var/spool/nullmailer/trigger
-chown mail:root -R /var/spool/nullmailer
+#
+# symlink /usr/sbin/sendmail => /usr/bin/msmtp
+#
+ln -s /usr/bin/msmtp /usr/sbin/sendmail

@@ -53,7 +53,8 @@ RUN apt-get -qq install -y \
     psmisc \
     nginx \
     bcron \
-    nullmailer \
+    gettext-base \
+    msmtp \
     ansible \
     net-tools \
     curl \
