@@ -13,11 +13,9 @@ if [ -z "${SENDMAIL_PORT}" ]; then
     SENDMAIL_PORT="25"
 fi
 
-SENDMAIL_FROM="auto_from off"
-SENDMAIL_MAILDOMAIN=""
+SENDMAIL_FROM=""
 if [ ! -z "${SENDMAIL_DOMAIN}" ]; then
-    SENDMAIL_FROM="auto_from on"
-    SENDMAIL_MAILDOMAIN="maildomain ${SENDMAIL_DOMAIN}"
+    SENDMAIL_FROM="from nobody@${SENDMAIL_DOMAIN}"
 fi
 
 #
@@ -26,7 +24,6 @@ fi
 SENDMAIL_HOST=${SENDMAIL_HOST} \
 SENDMAIL_PORT=${SENDMAIL_PORT} \
 SENDMAIL_FROM=${SENDMAIL_FROM} \
-SENDMAIL_MAILDOMAIN=${SENDMAIL_MAILDOMAIN} \
 envsubst <<"EOF" > /etc/msmtprc
 defaults
 account default
@@ -34,7 +31,6 @@ host $SENDMAIL_HOST
 port $SENDMAIL_PORT
 
 $SENDMAIL_FROM
-$SENDMAIL_MAILDOMAIN
 EOF
 
 #
