@@ -144,6 +144,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 * Configure: provide environment variables on container start:
     * `SENDMAIL_HOST` - ip address or domain name of SMTP server
     * `SENDMAIL_PORT` - override smtp port, default is `25`
+    * `SENDMAIL_DOMAIN` - force outbound `from:`
 
 Sample `docker run` command:
 ```
