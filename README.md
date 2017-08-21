@@ -25,7 +25,7 @@ It uses same directory layout for defining services, patched versions of `my_ini
 * [my_wait](sbin/my_wait) - dependency manager, a-la [wait-for-it](https://github.com/vishnubob/wait-for-it)  
 * [runit](http://smarden.org/runit/) - process supervisor
 * [nginx](https://nginx.org/) - reverse proxy service, disabled by default
-* [nullmailer](https://github.com/bruceg/nullmailer) - smtp relay/sendmail service, disabled by default
+* [msmtp](http://msmtp.sourceforge.net/doc/msmtp.html) - smtp relay/sendmail service, disabled by default
 * [bcron](https://github.com/bruceg/bcron) - cron service, disabled by default
 
 ### Container control
@@ -137,19 +137,18 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 * * * * * root /app/system_cleanup.sh
 ```
 
-#### Sendmail / Nullmailer
+#### Sendmail / msmtp
 
-* Repository: [official](https://packages.ubuntu.com/xenial/nullmailer)
+* Repository: [official](https://packages.ubuntu.com/xenial/msmtp)
 * Dockerfile: `RUN /sbin/enable_service sendmail`
 * Configure: provide environment variables on container start:
-    * `NULLMAILER_REMOTES` - see section `remotes` from [man page](http://manpages.ubuntu.com/manpages/xenial/man8/nullmailer-send.8.html) 
-    * `NULLMAILER_HOSTNAME` - hostname (default is "docker")
+    * `SENDMAIL_HOST` - ip address or domain name of SMTP server
+    * `SENDMAIL_PORT` - override smtp port, default is `25`
 
 Sample `docker run` command:
 ```
 docker run --rm \
-	-e NULLMAILER_HOSTNAME="example.com" \
-	-e NULLMAILER_REMOTES="smtp.example.com smtp --port=25" \
+	-e SENDMAIL_HOST="mail.example.com" \
 	...
 ```
 

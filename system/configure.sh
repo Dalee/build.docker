@@ -10,6 +10,9 @@ set -eo pipefail
 cp /build/sbin/* /sbin/ && chmod +x /sbin/*
 cp -r /build/system/service.available /etc/service.available
 
+# .bashrc
+cp -f /build/system/bash.rc /root/.bashrc
+
 #
 # my_init environment
 # @see https://github.com/phusion/baseimage-docker/tree/master/image
@@ -26,11 +29,5 @@ ln -s /usr/bin/pstree /usr/bin/ps
 ln -s /usr/bin/htop /usr/bin/top
 ln -s /usr/bin/vim.tiny /usr/bin/vim
 
-# .bashrc
-cp -f /build/system/bash.rc /root/.bashrc
-
-
 # some mandatory fixes for services
 mkdir -p /etc/nginx/virtuals
-chown mail:root /usr/sbin/nullmailer-queue
-chmod u+s /usr/sbin/nullmailer-queue
