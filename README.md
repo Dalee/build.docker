@@ -30,7 +30,7 @@ It uses same directory layout for defining services, patched versions of `my_ini
 
 ### Container control
 
-* <a href="#container-lifecyle">Lifecycle</a>
+* <a href="#container-lifecycle">Lifecycle</a>
 * <a href="#enabling-services">Enabling integrated services</a>
 * <a href="#sudo-su">Running as another user</a>
 
