@@ -1,6 +1,7 @@
 Dockerfile.baseimage
 Dockerfile.baseimage_test
 Dockerfile.nodejs-6
+Dockerfile.nodejs-8
 Dockerfile.php-5.6
 .travis.yml
 LICENSE

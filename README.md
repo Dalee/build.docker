@@ -8,21 +8,22 @@
 [![](https://images.microbadger.com/badges/version/dalee/baseimage.svg)](https://microbadger.com/images/dalee/baseimage "Get your own version badge on microbadger.com")
 
 > `baseimage` is inspired by [phusion/baseimage-docker](https://github.com/phusion/baseimage-docker).
-It uses same directory layout for defining services, patched versions of `my_init` and `setuser` 
-(but compatible with original one), but, build from scratch. 
+It uses same directory layout for defining services, patched versions of `my_init` and `setuser`
+(but compatible with original one), but, build from scratch.
 
-* Ubuntu 16.04 LTS 
+* Ubuntu 16.04 LTS
 * Tiny size and low memory footprint
 * Painless deploy
 * Prebuilt images:
     * <a href="#php56">PHP 5.6</a>
     * <a href="#php71">PHP 7.1</a>
     * <a href="#nodejs6">Node.js 6</a>
+    * <a href="#nodejs8">Node.js 8</a>
 
 ### Integrated services
 
 * [my_init](sbin/my_init) - boot manager
-* [my_wait](sbin/my_wait) - dependency manager, a-la [wait-for-it](https://github.com/vishnubob/wait-for-it)  
+* [my_wait](sbin/my_wait) - dependency manager, a-la [wait-for-it](https://github.com/vishnubob/wait-for-it)
 * [runit](http://smarden.org/runit/) - process supervisor
 * [nginx](https://nginx.org/) - reverse proxy service, disabled by default
 * [msmtp](http://msmtp.sourceforge.net/doc/msmtp.html) - smtp relay/sendmail service, disabled by default
@@ -57,7 +58,7 @@ Commands `htop` and `pstree` provided as replacements.
 * Default timezone: `Europe/Moscow`
 
 <a name="container-lifecycle"></a>
-### Container lifecycle  
+### Container lifecycle
 
 #### Boot sequence
 
@@ -72,7 +73,7 @@ Every wait script should exit with code:
 * `1` — wait, subsequent call required
 
 Global wait timeout covering all scripts in phase.
-Do not put `sleep` or `loop` inside of wait script, script should 
+Do not put `sleep` or `loop` inside of wait script, script should
 check condition and return asap.
 
 Global timeout for each `wait` phase can be configured independently:
@@ -88,7 +89,7 @@ at least once, even if one check is already violated timeout.
 If any of `/etc/my_init.d/*`, `/etc/rc.local` exits with non-zero exit code,
 container will refuse to start.
 
-Once all `wait` and `run` phases of boot sequence are finished, 
+Once all `wait` and `run` phases of boot sequence are finished,
 container considered alive. No further checks will run.
 
 #### Shutdown sequence
@@ -121,8 +122,8 @@ call `NODE_ENV=staging /sbin/setuser env | grep NODE_ENV` will print
 * Dockerfile: `RUN /sbin/enable_service cron`
 * Configure: `/etc/crontab`
 
-> Beware, `cron` will run tasks with reduced set of environment variables, 
-if your script need access to all container environment variables, 
+> Beware, `cron` will run tasks with reduced set of environment variables,
+if your script need access to all container environment variables,
 run task via `/sbin/setuser` command.
 
 Sample `/etc/crontab` file:
@@ -157,7 +158,7 @@ docker run --rm \
 
 * Repository: [nginx/stable](http://nginx.org/en/linux_packages.html#stable)
 * Dockerfile: `RUN /sbin/enable_service nginx`
-* Configure: 
+* Configure:
     * create project config (with `.conf` extension) in `/etc/nginx/virtuals` directory
     * if [default config](system/service.available/nginx/nginx.conf) is not suitable,
     just create desired `/etc/nginx/nginx.conf`, baseimage will not override it.
@@ -173,10 +174,23 @@ this option by default.
 
 > Image is squashed, so actually it contains only two layers.
 
-* Node.js 6 LTS
+* Node.js 6 Maintenance LTS
 * Yarn
 
 `docker pull dalee/nodejs-6`
+
+<a name="nodejs8"></a>
+## Node.JS 8
+
+[![](https://images.microbadger.com/badges/image/dalee/nodejs-8.svg)](https://microbadger.com/images/dalee/nodejs-8 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dalee/nodejs-8.svg)](https://microbadger.com/images/dalee/nodejs-8 "Get your own version badge on microbadger.com")
+
+> Image is squashed, so actually it contains only two layers.
+
+* Node.js 8 Active LTS
+* Yarn
+
+`docker pull dalee/nodejs-8`
 
 <a name="php56"></a>
 ## PHP 5.6
