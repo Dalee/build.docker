@@ -60,7 +60,8 @@ RUN apt-get -qq install -y \
     curl \
     telnet \
     make \
-    less
+    less \
+    dnsutils
 
 # Setup locale and update CA
 RUN locale-gen en_US.UTF-8 ru_RU.UTF-8 && \
