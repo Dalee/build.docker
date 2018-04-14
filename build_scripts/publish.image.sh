@@ -6,7 +6,7 @@ if [[ -z "${DOCKER_LOGIN}" || -z "${DOCKER_PASSWORD}" ]]; then
     exit 1
 fi
 
-docker login -u="$DOCKER_LOGIN" -p="$DOCKER_PASSWORD"
+echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_LOGIN" --password-stdin
 
 IMAGE_VERSION="dalee/${IMAGE}:${VERSION}"
 if [ ! -z "${TRAVIS_TAG}" ]; then
