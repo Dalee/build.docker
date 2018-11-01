@@ -14,25 +14,24 @@ RUN echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main" > /etc/apt
 
 # Install
 RUN apt-get -qq install -y \
-    php7.1-common \
-    php7.1-cli \
-    php7.1-fpm \
-    php7.1-pgsql \
-    php7.1-mysql \
-    php7.1-gd \
-    php7.1-bz2 \
-    php7.1-zip \
-    php7.1-json \
-    php7.1-xml \
-    php7.1-curl \
-    php7.1-intl \
-    php7.1-mbstring \
-    php7.1-mcrypt \
-    php7.1-bcmath \
-    php7.1-soap \
-    php7.1-memcached \
-    php5.6-redis \
-    php7.1-xdebug
+    php7.2-common \
+    php7.2-cli \
+    php7.2-fpm \
+    php7.2-pgsql \
+    php7.2-mysql \
+    php7.2-gd \
+    php7.2-bz2 \
+    php7.2-zip \
+    php7.2-json \
+    php7.2-xml \
+    php7.2-curl \
+    php7.2-intl \
+    php7.2-mbstring \
+    php7.2-bcmath \
+    php7.2-soap \
+    php7.2-memcached \
+    php-redis \
+    php7.2-xdebug
 
 # Install composer
 RUN curl "https://getcomposer.org/installer" -o /tmp/composer-installer.php && \
@@ -44,8 +43,8 @@ RUN curl "https://getcomposer.org/installer" -o /tmp/composer-installer.php && \
 
 # Disable composer warning and xdebug extension
 RUN echo "\nexport COMPOSER_ALLOW_SUPERUSER=1\n" >> /root/.bashrc && \
-    echo ";zend_extension=xdebug.so\n" > /etc/php/7.1/cli/conf.d/20-xdebug.ini && \
-    echo ";zend_extension=xdebug.so\n" > /etc/php/7.1/fpm/conf.d/20-xdebug.ini
+    echo ";zend_extension=xdebug.so\n" > /etc/php/7.2/cli/conf.d/20-xdebug.ini && \
+    echo ";zend_extension=xdebug.so\n" > /etc/php/7.2/fpm/conf.d/20-xdebug.ini
 
 # Cleanup
 RUN apt-get -qq clean && \
@@ -53,7 +52,7 @@ RUN apt-get -qq clean && \
     rm -rf \
     /etc/php/5.6 \
     /etc/php/7.0 \
-    /etc/php/7.2 \
+    /etc/php/7.1 \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
     /usr/share/man/* \

@@ -17,6 +17,7 @@ It uses same directory layout for defining services, patched versions of `my_ini
 * Prebuilt images:
     * <a href="#php56">PHP 5.6</a>
     * <a href="#php71">PHP 7.1</a>
+    * <a href="#php72">PHP 7.2</a>
     * <a href="#nodejs6">Node.js 6</a>
     * <a href="#nodejs8">Node.js 8</a>
 
@@ -219,6 +220,17 @@ this option by default.
 * XDebug extension (disabled by default)
 
 `docker pull dalee/php-7.1`
+
+<a name="php72"></a>
+## PHP 7.2
+
+> Image is squashed, so actually it contains only two layers.
+
+* PHP 7.2
+* Composer
+* XDebug extension (disabled by default)
+
+`docker pull dalee/php-7.2`
 
 ## Releases
 
