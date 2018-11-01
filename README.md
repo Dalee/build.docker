@@ -224,6 +224,9 @@ this option by default.
 <a name="php72"></a>
 ## PHP 7.2
 
+[![](https://images.microbadger.com/badges/image/dalee/php-7.2.svg)](https://microbadger.com/images/dalee/php-7.2 "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/dalee/php-7.2.svg)](https://microbadger.com/images/dalee/php-7.2 "Get your own version badge on microbadger.com")
+
 > Image is squashed, so actually it contains only two layers.
 
 * PHP 7.2
