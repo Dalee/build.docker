@@ -24,7 +24,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
     php7.3-curl \
     php7.3-intl \
     php7.3-mbstring \
-    php7.3-bcmath \
+    php7.3-bcmath && \
     update-alternatives --set php /usr/bin/php7.3 && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     locale-gen ru_RU.UTF-8 && update-locale
