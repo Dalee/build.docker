@@ -16,8 +16,9 @@ RUN apt-get -y update && \
     php8.2-pgsql \
     php8.2-soap \
     php8.2-xml \
-    php8.2-zip && \
-    locale-gen ru_RU.UTF-8 && update-locale
+    php8.2-zip
+
+RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
 
 RUN apt-get clean && \
     apt-get autoremove --purge && \
@@ -27,7 +28,6 @@ RUN apt-get clean && \
     /usr/share/man/* \
     /usr/share/info/* \
     /usr/share/lintian/* \
-    /usr/share/locale/* \
     /usr/lib/systemd/* \
     /var/log/alternatives.log \
     /var/log/bootstrap.log \
