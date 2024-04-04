@@ -1,5 +1,6 @@
 FROM debian:12-slim
 WORKDIR /app/
+EXPOSE 9000
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get -y update && \
@@ -16,9 +17,11 @@ RUN apt-get -y update && \
     php8.2-pgsql \
     php8.2-soap \
     php8.2-xml \
-    php8.2-zip
+    php8.2-zip \
+    php8.2-fpm
 
 RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
+RUN sed -i 's/^listen = .\+/listen = 9000/g' /etc/php/8.2/fpm/pool.d/www.conf
 
 RUN apt-get clean && \
     apt-get autoremove --purge && \
@@ -36,4 +39,5 @@ RUN apt-get clean && \
     /var/log/apt/* \
     /tmp/*
 
+#CMD ["php8.2-fpm", "-F"]
 CMD ["php", "-a"]
