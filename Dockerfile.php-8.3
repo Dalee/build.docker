@@ -1,5 +1,6 @@
 FROM debian:12-slim
 WORKDIR /app/
+EXPOSE 9000
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update -y && apt-get -y install apt-transport-https curl locales && \
