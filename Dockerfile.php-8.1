@@ -7,25 +7,26 @@ RUN apt-get update -y && apt-get -y install apt-transport-https curl locales unz
     curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg && \
     sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ bookworm  main" > /etc/apt/sources.list.d/php.list'
 
-RUN apt-get update -y && apt-get -y install php8.3 \
-    php8.3-bcmath \
-    php8.3-cli \
-    php8.3-common \
-    php8.3-curl \
-    php8.3-dom \
-    php8.3-gd \
-    php8.3-intl \
-    php8.3-mbstring \
-    php8.3-mysql \
-    php8.3-pgsql \
-    php8.3-soap \
-    php8.3-xml \
-    php8.3-zip \
-    php8.3-redis \
-    php8.3-fpm
+RUN apt-get -y update && \
+    apt-get -y install locales php8.1 \
+    php8.1-bcmath \
+    php8.1-cli \
+    php8.1-common \
+    php8.1-curl \
+    php8.1-dom \
+    php8.1-gd \
+    php8.1-intl \
+    php8.1-mbstring \
+    php8.1-mysql \
+    php8.1-pgsql \
+    php8.1-soap \
+    php8.1-xml \
+    php8.1-zip \
+    php8.1-redis \
+    php8.1-fpm
 
 RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
-RUN sed -i 's/^listen = .\+/listen = 9000/g' /etc/php/8.3/fpm/pool.d/www.conf
+RUN sed -i 's/^listen = .\+/listen = 9000/g' /etc/php/8.1/fpm/pool.d/www.conf
 
 RUN apt-get clean && \
     apt-get autoremove --purge && \
@@ -43,5 +44,5 @@ RUN apt-get clean && \
     /var/log/apt/* \
     /tmp/*
 
-#CMD ["php-fpm8.3", "-F"]
+#CMD ["php8.1-fpm", "-F"]
 CMD ["php", "-a"]

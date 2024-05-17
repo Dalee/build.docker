@@ -3,8 +3,11 @@ WORKDIR /app/
 EXPOSE 9000
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN apt-get -y update && \
-    apt-get -y install locales php8.2 \
+RUN apt-get update -y && apt-get -y install apt-transport-https curl locales unzip && \
+    curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg && \
+    sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ bookworm  main" > /etc/apt/sources.list.d/php.list'
+
+RUN apt-get update -y && apt-get -y install php8.2 \
     php8.2-bcmath \
     php8.2-cli \
     php8.2-common \
@@ -18,6 +21,7 @@ RUN apt-get -y update && \
     php8.2-soap \
     php8.2-xml \
     php8.2-zip \
+    php8.2-redis \
     php8.2-fpm
 
 RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
@@ -39,5 +43,5 @@ RUN apt-get clean && \
     /var/log/apt/* \
     /tmp/*
 
-#CMD ["php8.2-fpm", "-F"]
+#CMD ["php-fpm8.2", "-F"]
 CMD ["php", "-a"]
