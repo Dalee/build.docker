@@ -1,0 +1,42 @@
+FROM dunglas/frankenphp:php8.3
+WORKDIR /app/
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
+RUN apt-get update -y && apt-get -y install locales unzip git
+RUN install-php-extensions \
+    bcmath \
+    calendar \
+    exif \
+    gettext \
+    gd \
+    ftp \
+    igbinary \
+    intl \
+    opcache \
+    pcntl \
+    mysqli \
+    pdo_mysql \
+    pgsql \
+    pdo_pgsql \
+    redis \
+    soap \
+    zip
+
+RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
+
+RUN apt-get clean && \
+    apt-get autoremove --purge && \
+    rm -rf \
+    /var/lib/apt/lists/* \
+    /usr/share/doc/* \
+    /usr/share/man/* \
+    /usr/share/info/* \
+    /usr/share/lintian/* \
+    /usr/share/locale/* \
+    /usr/lib/systemd/* \
+    /usr/src/* \
+    /var/log/alternatives.log \
+    /var/log/bootstrap.log \
+    /var/log/dpkg.log \
+    /var/log/apt/* \
+    /tmp/*
