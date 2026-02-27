@@ -1,11 +1,11 @@
-FROM debian:12-slim
+FROM debian:trixie-slim
 WORKDIR /app/
 EXPOSE 9000
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update -y && apt-get -y install apt-transport-https curl locales unzip git && \
     curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg && \
-    sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ bookworm  main" > /etc/apt/sources.list.d/php.list'
+    sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ trixie main" > /etc/apt/sources.list.d/php.list'
 
 RUN apt-get update -y && apt-get -y install php8.3 \
     php8.3-bcmath \
