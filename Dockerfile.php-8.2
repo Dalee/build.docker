@@ -22,7 +22,8 @@ RUN apt-get update -y && apt-get -y install php8.2 \
     php8.2-xml \
     php8.2-zip \
     php8.2-redis \
-    php8.2-fpm
+    php8.2-fpm \
+    php8.2-ldap
 
 RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
 RUN sed -i 's/^listen = .\+/listen = 9000/g' /etc/php/8.2/fpm/pool.d/www.conf
