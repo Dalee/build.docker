@@ -2,7 +2,7 @@ FROM dunglas/frankenphp:php8.4
 WORKDIR /app/
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
-RUN apt-get update -y && apt-get -y install locales unzip git
+RUN apt-get update -y && apt-get -y install --no-install-recommends locales unzip git
 RUN install-php-extensions \
     bcmath \
     calendar \
@@ -24,10 +24,14 @@ RUN install-php-extensions \
     xml \
     dom
 
+# Disable session.upload_progress (CVE-2026-109619 path). conf.d survives the downstream
+# `cp php.ini-production php.ini`; PHP_INI_PERDIR, so ini_set() can't re-enable it.
+RUN printf 'session.upload_progress.enabled = Off\n' > "$PHP_INI_DIR/conf.d/zz-upload-progress-off.ini"
+
 RUN sed -i 's/^# *\(\(ru_RU\|en_US\).UTF-8\)/\1/' /etc/locale.gen && locale-gen && update-locale
 
 RUN apt-get clean && \
-    apt-get autoremove --purge && \
+    apt-get -y autoremove --purge && \
     rm -rf \
     /var/lib/apt/lists/* \
     /usr/share/doc/* \
